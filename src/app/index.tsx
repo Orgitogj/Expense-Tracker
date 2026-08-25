@@ -1,34 +1,42 @@
-import { StyleSheet, Text, View } from "react-native";
+import React, { useEffect } from 'react';
+import { Image, StyleSheet, View } from 'react-native';
+import { useRouter } from 'expo-router';
+import { colors } from '../constants/theme';
 
-export default function Page() {
+const Index = () => {
+  const router = useRouter();
+
+  useEffect(() => {
+  const timer = setTimeout(() => {
+    router.replace('/(auth)/welcome');
+  }, 2000);
+
+  return () => clearTimeout(timer);
+}, []);
+  
+
   return (
     <View style={styles.container}>
-      <View style={styles.main}>
-        <Text style={styles.title}>Hello World</Text>
-        <Text style={styles.subtitle}>This is the first page of your app.</Text>
-      </View>
+      <Image
+        style={styles.logo}
+        resizeMode="contain"
+        source={require('../../assets/images/splashImage.png')}
+      />
     </View>
   );
-}
+};
+
+export default Index;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    padding: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: colors.neutral900,
   },
-  main: {
-    flex: 1,
-    justifyContent: "center",
-    maxWidth: 960,
-    marginHorizontal: "auto",
-  },
-  title: {
-    fontSize: 64,
-    fontWeight: "bold",
-  },
-  subtitle: {
-    fontSize: 36,
-    color: "#38434D",
+  logo: {
+    height: '20%',
+    aspectRatio: 1,
   },
 });
