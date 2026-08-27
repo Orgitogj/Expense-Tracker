@@ -1,10 +1,12 @@
-import { StyleSheet, Text, TouchableOpacity, View,Image } from 'react-native'
-import React from 'react'
-import ScreenWrapper from '@/src/components/ScreenWrapper'
-import Typo from '@/src/components/Typo'
-import { spacingX, spacingY } from '@/src/constants/theme'
-import { verticalScale } from '@/utils/styling'
-import { colors } from '@/src/constants/theme'
+import { StyleSheet, Text, TouchableOpacity, View,Image } from 'react-native';
+import React from 'react';
+import ScreenWrapper from '@/src/components/ScreenWrapper';
+import Typo from '@/src/components/Typo';
+import { spacingX, spacingY } from '@/src/constants/theme';
+import { verticalScale } from '@/utils/styling';
+import { colors } from '@/src/constants/theme';
+import Button from '@/src/components/Button';
+import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
 const Welcome = () => {
   return (
     <ScreenWrapper>
@@ -14,28 +16,34 @@ const Welcome = () => {
             <Typo fontWeight={"500"}>Sign in</Typo>
 
           </TouchableOpacity>
-          <Image source={require('../../../assets/images/welcome.png')}
+          <Animated.Image
+          entering={FadeIn.duration(1000)}
+          source={require('../../../assets/images/welcome.png')}
           style={styles.welcomeImage}
           resizeMode="contain"/>
         </View>
         <View style={styles.footer}>
-          <View style={{alignItems:"center"}}>
+          <Animated.View entering={FadeInDown.duration(1000).springify().damping(12)} style={{alignItems:"center"}}>
             <Typo size={30} fontWeight={"800"}>
               Always take control
             </Typo>
             <Typo size={30} fontWeight={"800"}>
              of your finances
             </Typo>
-          </View>
-          <View style={{alignItems:"center",gap:2}}>
+          </Animated.View>
+         <Animated.View entering={FadeInDown.duration(1000).delay(100).springify().damping(12)} style={{alignItems:"center",gap:2}}>
             <Typo size={17} color={colors.textLight}>
               Financed must be arranged to set a better
             </Typo>
             <Typo size={17} color={colors.textLight}>
               lifestyle in future
             </Typo>
-          </View>
-          <View style={styles.buttonContainer}></View>
+          </Animated.View>
+          <Animated.View entering={FadeInDown.duration(1000).delay(200).springify().damping(12)}  style={styles.buttonContainer}>
+            <Button>
+              <Typo size={22} color={colors.neutral900} fontWeight={"600"}>Get started</Typo>
+            </Button>
+          </Animated.View>
         </View>
       </View>
     </ScreenWrapper>
