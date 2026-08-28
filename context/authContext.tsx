@@ -1,18 +1,41 @@
 import { auth, firestore } from "@/config/firebase";
 import { AuthContextType, UserType } from "@/types";
+import { useRouter } from "expo-router";
 import {
   createUserWithEmailAndPassword,
+  onAuthStateChanged,
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const router = useRouter();
+
   const [user, setUser] = useState<UserType>(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      if (firebaseUser) {
+        setUser({
+          uid: firebaseUser.uid,
+          email: firebaseUser.email,
+          name: firebaseUser.displayName,
+        });
+
+        router.replace("/(tabs)");
+      } else {
+        setUser(null);
+        router.replace("/(auth)/welcome");
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   const login = async (email: string, password: string) => {
     try {
@@ -22,7 +45,33 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         success: true,
       };
     } catch (error: any) {
-      const msg = error.message;
+      console.log("Login error:", error.code);
+
+      let msg = "Something went wrong. Please try again.";
+
+      switch (error.code) {
+        case "auth/invalid-credential":
+        case "auth/user-not-found":
+        case "auth/wrong-password":
+          msg = "Incorrect email or password.";
+          break;
+
+        case "auth/invalid-email":
+          msg = "Please enter a valid email address.";
+          break;
+
+        case "auth/too-many-requests":
+          msg = "Too many attempts. Please try again later.";
+          break;
+
+        case "auth/network-request-failed":
+          msg = "No internet connection. Please check your connection.";
+          break;
+
+        case "auth/user-disabled":
+          msg = "This account has been disabled.";
+          break;
+      }
 
       return {
         success: false,
@@ -53,7 +102,31 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         success: true,
       };
     } catch (error: any) {
-      const msg = error.message;
+      console.log("Register error:", error.code);
+
+      let msg = "Something went wrong. Please try again.";
+
+      switch (error.code) {
+        case "auth/email-already-in-use":
+          msg = "This email is already registered.";
+          break;
+
+        case "auth/invalid-email":
+          msg = "Please enter a valid email address.";
+          break;
+
+        case "auth/weak-password":
+          msg = "Your password is too weak.";
+          break;
+
+        case "auth/network-request-failed":
+          msg = "No internet connection. Please check your connection.";
+          break;
+
+        case "auth/operation-not-allowed":
+          msg = "Registration is currently unavailable.";
+          break;
+      }
 
       return {
         success: false,
@@ -80,7 +153,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setUser(userData);
       }
     } catch (error: any) {
-      console.log("error", error);
+      console.log("Update user data error:", error);
     }
   };
 
