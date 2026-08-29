@@ -13,8 +13,10 @@ import *as Icons from 'phosphor-react-native'
 import Animated, { FadeInDown } from 'react-native-reanimated'
 import { signOut } from 'firebase/auth'
 import { auth } from '@/config/firebase'
+import { useRouter } from 'expo-router'
 const Profile = () => {
   const {user}=useAuth();
+  const router=useRouter();
   const accountOptions:accountOptionType[]=[
     {
     title:"Edit profile",
@@ -86,6 +88,7 @@ const handlePress=(item:accountOptionType)=>{
   if(item.title=='Logout'){
     showLogoutAlert();
   }
+  if(item.routeName) router.push(item.routeName);
 }
   return (
     <ScreenWrapper>
@@ -119,7 +122,7 @@ const handlePress=(item:accountOptionType)=>{
                     weight="bold"
                     color={colors.white}/>
                   </TouchableOpacity>
-                  </View>
+                  </Animated.View>
               );
             })
           }
