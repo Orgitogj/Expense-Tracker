@@ -15,28 +15,38 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const router = useRouter();
-
   const [user, setUser] = useState<UserType>(null);
+  const [isSignedIn, setIsSignedIn] = useState(false);
+  const [isAuthReady, setIsAuthReady] = useState(false);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-      if (firebaseUser) {
-        setUser({
-          uid: firebaseUser.uid,
-          email: firebaseUser.email,
-          name: firebaseUser.displayName,
-        });
-        updateUserData(firebaseUser.uid);
-
-        router.replace("/(tabs)");
-      } else {
-        setUser(null);
-        router.replace("/(auth)/welcome");
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      try {
+        if (firebaseUser) {
+          setUser({
+            uid: firebaseUser.uid,
+            email: firebaseUser.email,
+            name: firebaseUser.displayName,
+          });
+          setIsSignedIn(true);
+          await updateUserData(firebaseUser.uid);
+        } else {
+          setUser(null);
+          setIsSignedIn(false);
+        }
+      } finally {
+        setIsAuthReady(true);
       }
     });
 
     return () => unsubscribe();
   }, []);
+
+  useEffect(() => {
+    if (!isAuthReady) return;
+
+    router.replace(isSignedIn ? "/(tabs)" : "/(auth)/welcome");
+  }, [isAuthReady, isSignedIn]);
 
   const login = async (email: string, password: string) => {
     try {
@@ -161,6 +171,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const contextValue: AuthContextType = {
     user,
     setUser,
+    isAuthReady,
     login,
     register,
     updateUserData,
