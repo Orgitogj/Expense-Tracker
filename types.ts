@@ -143,6 +143,7 @@ export type UserDataType = {
 export type AuthContextType = {
   user: UserType;
   setUser: Function;
+  isAuthReady: boolean;
   login: (
     email: string,
     password: string
