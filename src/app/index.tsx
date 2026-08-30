@@ -1,20 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
-import { useRouter } from 'expo-router';
 import { colors } from '../constants/theme';
-
 const Index = () => {
-  const router = useRouter();
-
-  useEffect(() => {
-  const timer = setTimeout(() => {
-    router.replace('/(auth)/welcome');
-  }, 2000);
-
-  return () => clearTimeout(timer);
-}, []);
-  
-
   return (
     <View style={styles.container}>
       <Image
