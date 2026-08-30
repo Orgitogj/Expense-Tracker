@@ -1,8 +1,18 @@
 import { Stack } from "expo-router";
-import React from "react";
-import { AuthProvider } from "@/context/authContext";
+import React, { useEffect } from "react";
+import * as SplashScreen from "expo-splash-screen";
+import { AuthProvider, useAuth } from "@/context/authContext";
+SplashScreen.preventAutoHideAsync().catch(() => {
+
+});
+SplashScreen.setOptions({ fade: true, duration: 300 });
 
 const StackLayout = () => {
+  const { isAuthReady } = useAuth();
+  useEffect(() => {
+    if (isAuthReady) SplashScreen.hide();
+  }, [isAuthReady]);
+
   return (
     <Stack
       screenOptions={{
