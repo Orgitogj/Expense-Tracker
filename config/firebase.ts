@@ -9,13 +9,20 @@ import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyA2R9Oy4vwifx5BPV-e0Mq78I85uRXVCsA",
-  authDomain: "expense-tracker-307f5.firebaseapp.com",
-  projectId: "expense-tracker-307f5",
-  storageBucket: "expense-tracker-307f5.firebasestorage.app",
-  messagingSenderId: "937433245594",
-  appId: "1:937433245594:web:5c434644d71dca49f4fc23"
+  apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId:
+    process.env.EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.EXPO_PUBLIC_FIREBASE_APP_ID,
 };
+
+for (const [key, value] of Object.entries(firebaseConfig)) {
+  if (!value?.trim()) {
+    throw new Error(`Missing Firebase configuration: ${key}`);
+  }
+}
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
