@@ -63,7 +63,16 @@ const Login = () => {
             secureTextEntry
           />
         </View>
-        <Typo size={14} color={colors.text} style={{alignSelf:"flex-end"}}>Forgot password?</Typo>
+     <Pressable
+        onPress={() => router.push("/(auth)/forgotPassword")}
+        style={{ alignSelf: "flex-end" }}
+        accessibilityRole="button"
+        accessibilityLabel="Reset password"
+      >
+  <Typo size={14} color={colors.text}>
+    Forgot password?
+  </Typo>
+</Pressable>
         <Button  loading={isLoading} onPress={handleSubmit}>
           <Typo fontWeight={'700'} color={colors.black}size={21}>Log in</Typo>
 

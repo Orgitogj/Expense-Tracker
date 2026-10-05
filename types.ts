@@ -153,6 +153,7 @@ export type AuthContextType = {
   user: UserType;
   setUser: Function;
   isAuthReady: boolean;
+  isSignedIn: boolean;
   login: (
     email: string,
     password: string

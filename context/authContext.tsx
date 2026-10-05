@@ -6,7 +6,6 @@ import {
   RegisterResult,
   UserType,
 } from "@/types";
-import { useRouter } from "expo-router";
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
@@ -47,7 +46,6 @@ const getRegisterErrorMessage = (code: string | null): string => {
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const router = useRouter();
   const [user, setUser] = useState<UserType>(null);
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [isAuthReady, setIsAuthReady] = useState(false);
@@ -89,12 +87,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
     return () => unsubscribe();
   }, []);
-
-  useEffect(() => {
-    if (!isAuthReady) return;
-
-    router.replace(isSignedIn ? "/(tabs)" : "/(auth)/welcome");
-  }, [isAuthReady, isSignedIn]);
 
   const login = async (email: string, password: string) => {
     try {
@@ -255,6 +247,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     user,
     setUser,
     isAuthReady,
+    isSignedIn,
     login,
     register,
     retryProfileSave,
