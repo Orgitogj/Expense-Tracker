@@ -1,6 +1,6 @@
-import { firestore } from "@/config/firebase";
+import { auth, firestore } from "@/config/firebase";
 import { ResponseType, UserDataType } from "@/types";
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import { uploadFileToStorage } from "./imageService";
 
 export const updateUser=async(
@@ -8,15 +8,25 @@ export const updateUser=async(
     updatedData:UserDataType
 ):Promise<ResponseType>=>{
     try{
-        if(updatedData.image&&updatedData?.image?.uri){
-            const imageUpload=await uploadFileToStorage(updatedData.image,"users");
+        const currentUser=auth.currentUser;
+        if(!currentUser||currentUser.uid!==uid){
+            return {success:false,msg:"You must be signed in to update your profile"};
+        }
+        const data:Record<string,any>={...updatedData};
+        if(data.image&&data.image?.uri){
+            const imageUpload=await uploadFileToStorage(data.image,"users");
             if(!imageUpload.success){
                 return {success:false,msg:imageUpload.msg||"Failed to upload image"};
             }
-            updatedData.image=imageUpload.data;
+            data.image=imageUpload.data;
         }
+        data.uid=currentUser.uid;
+        data.email=currentUser.email;
+        const cleanData=Object.fromEntries(
+            Object.entries(data).filter(([,value])=>value!==undefined)
+        );
         const userRef=doc(firestore,"users",uid);
-        await updateDoc(userRef,updatedData);
+        await setDoc(userRef,cleanData,{merge:true});
         return{success:true,msg:"Updated successfuly"};
     }
     catch(error:any){

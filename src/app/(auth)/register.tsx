@@ -18,20 +18,52 @@ const Register = () => {
   const nameRef=useRef("");
   const [isLoading,setIsLoading]=useState(false);
   const router=useRouter();
-  const {register:registerUser}=useAuth();
+  const submittingRef=useRef(false);
+  const {register:registerUser,retryProfileSave}=useAuth();
+  const showProfileRetry=(msg:string)=>{
+    Alert.alert("Sign up",msg,[
+      {text:"Later",style:"cancel"},
+      {
+        text:"Try again",
+        onPress:async()=>{
+          const res=await retryProfileSave();
+          if(res.success) return;
+          if(res.retryable){
+            showProfileRetry(res.msg);
+          }else{
+            Alert.alert("Sign up",res.msg);
+          }
+        }
+      }
+    ]);
+  }
   const handleSubmit=async()=>{
-    if (!emailRef.current || !passwordRef.current||!nameRef.current){
+    if(submittingRef.current) return;
+    const email=emailRef.current.trim();
+    const name=nameRef.current.trim();
+    const password=passwordRef.current;
+    if (!email || !password||!name){
       Alert.alert('Sign up',"Please fill all the  fields");
       return;
     }
-    setIsLoading(true);
-    const res=await registerUser(emailRef.current,passwordRef.current,nameRef.current);
-    setIsLoading(false);
-    console.log('register result:',res);
-    if(!res.success){
-      Alert.alert("Sign up",res.msg);
+    if(!/^\S+@\S+\.\S+$/.test(email)){
+      Alert.alert('Sign up',"Please enter a valid email address.");
+      return;
     }
-    
+    submittingRef.current=true;
+    setIsLoading(true);
+    try{
+      const res=await registerUser(email,password,name);
+      console.log('register result:',res.status);
+      if(res.status==="auth-failed"){
+        Alert.alert("Sign up",res.msg);
+      }else if(res.status==="profile-failed"){
+        showProfileRetry(res.msg);
+      }
+    }finally{
+      submittingRef.current=false;
+      setIsLoading(false);
+    }
   }
   return (
     <ScreenWrapper>

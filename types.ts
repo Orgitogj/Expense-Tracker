@@ -140,6 +140,15 @@ export type UserDataType = {
   image?: any;
 };
 
+export type RegisterResult =
+  | { status: "success" }
+  | { status: "auth-failed"; msg: string }
+  | { status: "profile-failed"; msg: string };
+
+export type ProfileSaveResult =
+  | { success: true }
+  | { success: false; msg: string; retryable: boolean };
+
 export type AuthContextType = {
   user: UserType;
   setUser: Function;
@@ -152,7 +161,8 @@ export type AuthContextType = {
     email: string,
     password: string,
     name: string
-  ) => Promise<{ success: boolean; msg?: string }>;
+  ) => Promise<RegisterResult>;
+  retryProfileSave: () => Promise<ProfileSaveResult>;
   updateUserData: (userId: string) => Promise<void>;
 };
 
