@@ -1,15 +1,10 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import ScreenWrapper from '@/src/components/ScreenWrapper'
+import ScreenWrapper from '@/src/components/ScreenWrapper';
+import Typo from '@/src/components/Typo';
 
-const Wallet = () => {
+export default function Wallet() {
   return (
     <ScreenWrapper>
-      <Text>Wallet</Text>
+      <Typo>Wallet</Typo>
     </ScreenWrapper>
-  )
+  );
 }
-
-export default Wallet
-
-const styles = StyleSheet.create({})

@@ -1,9 +1,9 @@
-import { Platform, StyleSheet, Text, View } from 'react-native'
+import { Platform, StyleSheet, View } from 'react-native'
 import React from 'react'
 import { ModalWrapperProps } from '@/types'
 import { colors, spacingY } from '../constants/theme'
 
-const isIos=Platform.OS=='ios';
+const isIos=Platform.OS==='ios';
 const ModalWrapper = ({
     style,
     children,

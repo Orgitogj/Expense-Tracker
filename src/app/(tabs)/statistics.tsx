@@ -1,15 +1,10 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import ScreenWrapper from '@/src/components/ScreenWrapper'
+import ScreenWrapper from '@/src/components/ScreenWrapper';
+import Typo from '@/src/components/Typo';
 
-const Statistics = () => {
+export default function Statistics() {
   return (
     <ScreenWrapper>
-      <Text>Statistics</Text>
+      <Typo>Statistics</Typo>
     </ScreenWrapper>
-  )
+  );
 }
-
-export default Statistics
-
-const styles = StyleSheet.create({})
