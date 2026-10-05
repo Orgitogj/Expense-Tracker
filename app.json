@@ -40,7 +40,8 @@
         {
           "photosPermission": "Allow $(PRODUCT_NAME) to access your photos so you can set a profile picture."
         }
-      ]
+      ],
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true,
