@@ -1,5 +1,4 @@
-
-import { Platform, StyleSheet, Text, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 import { useLinkBuilder, PlatformPressable } from 'expo-router/react-navigation';
 import { BottomTabBarProps } from 'expo-router/build/react-navigation/bottom-tabs';
 import { verticalScale } from '@/utils/styling';
@@ -51,14 +50,6 @@ export default function CustomTabs({
     <View style={styles.tabbar}>
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
-
-        const label =
-          typeof options.tabBarLabel === 'string'
-            ? options.tabBarLabel
-            : options.title !== undefined
-              ? options.title
-              : route.name;
-
         const isFocused = state.index === index;
 
         const onPress = () => {
@@ -95,9 +86,6 @@ export default function CustomTabs({
           >
             {icon}
 
-            {
-                tabBarIcons[route.name]&&tabBarIcons [route.name](isFocused)
-            }
           </PlatformPressable>
         );
       })}
