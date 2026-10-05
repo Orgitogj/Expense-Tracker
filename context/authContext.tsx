@@ -1,4 +1,5 @@
 import { auth, firestore } from "@/config/firebase";
+import { requestEmailVerification } from "@/services/authService";
 import { updateUser } from "@/services/userService";
 import {
   AuthContextType,
@@ -19,7 +20,10 @@ const AuthContext = createContext<AuthContextType | null>(null);
 const PROFILE_SAVE_FAILED_MSG =
   "Your account was created, but we couldn't save your profile. You can try again now or update it later from your profile.";
 
-const getErrorCode = (error: unknown): string | null => {
+const VERIFICATION_EMAIL_FAILED_MSG =
+  "We couldn't send the verification email. You can request it again from Profile.";
+
+const getErrorCode =(error: unknown): string | null => {
   if (typeof error === "object" && error !== null && "code" in error) {
     return typeof error.code === "string" ? error.code : null;
   }
@@ -171,11 +175,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
 
     pendingProfileRef.current = { uid, name };
+    const verificationRequest = requestEmailVerification(uid);
     const saved = await saveProfile(uid, name);
+    const verification = await verificationRequest;
+
+    if (auth.currentUser?.uid !== uid) {
+      return { status: "session-changed" };
+    }
+
+    const verificationWarning = verification.success
+      ? undefined
+      : VERIFICATION_EMAIL_FAILED_MSG;
 
     return saved.success
-      ? { status: "success" }
-      : { status: "profile-failed", msg: saved.msg };
+      ? { status: "success", verificationWarning }
+      : { status: "profile-failed", msg: saved.msg, verificationWarning };
   };
 
   const register = async (

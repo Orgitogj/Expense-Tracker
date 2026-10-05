@@ -70,13 +70,22 @@ export async function requestPasswordReset(
   }
 }
 
-export async function requestEmailVerification(): Promise<AuthActionResult> {
+export async function requestEmailVerification(
+  expectedUid?: string
+): Promise<AuthActionResult> {
   const user = auth.currentUser;
 
   if (!user) {
     return {
       success: false,
       msg: "Please sign in to verify your email.",
+    };
+  }
+
+  if (expectedUid !== undefined && user.uid !== expectedUid) {
+    return {
+      success: false,
+      msg: "Your session changed. Please try again.",
     };
   }
 

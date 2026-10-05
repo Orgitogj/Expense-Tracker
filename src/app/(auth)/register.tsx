@@ -58,7 +58,11 @@ const Register = () => {
       if(res.status==="auth-failed"){
         Alert.alert("Sign up",res.msg);
       }else if(res.status==="profile-failed"){
-        showProfileRetry(res.msg);
+        showProfileRetry(
+          res.verificationWarning?`${res.msg}\n\n${res.verificationWarning}`:res.msg
+        );
+      }else if(res.status==="success"&&res.verificationWarning){
+        Alert.alert("Account created",res.verificationWarning);
       }
     }finally{
       submittingRef.current=false;

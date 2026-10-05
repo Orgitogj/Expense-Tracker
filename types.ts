@@ -141,9 +141,10 @@ export type UserDataType = {
 };
 
 export type RegisterResult =
-  | { status: "success" }
+  | { status: "success"; verificationWarning?: string }
   | { status: "auth-failed"; msg: string }
-  | { status: "profile-failed"; msg: string };
+  | { status: "profile-failed"; msg: string; verificationWarning?: string }
+  | { status: "session-changed" };
 
 export type ProfileSaveResult =
   | { success: true }
