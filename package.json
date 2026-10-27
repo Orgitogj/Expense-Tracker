@@ -13,6 +13,7 @@
     "mobile:android": "npm run android --workspace @expense-tracker/mobile",
     "mobile:ios": "npm run ios --workspace @expense-tracker/mobile",
     "mobile:web": "npm run web --workspace @expense-tracker/mobile",
+    "mobile:test": "npm run test --workspace @expense-tracker/mobile",
     "api:dev": "npm run dev --workspace @expense-tracker/api",
     "api:build": "npm run build --workspace @expense-tracker/api",
     "api:start": "npm run start --workspace @expense-tracker/api",
