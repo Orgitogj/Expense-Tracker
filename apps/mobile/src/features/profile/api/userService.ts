@@ -1,5 +1,6 @@
-import { auth, firestore } from "@/config/firebase";
-import { ResponseType, UserDataType } from "@/types";
+import { auth, firestore } from "@/lib/firebase";
+import { UserDataType } from "@/features/profile/types";
+import { ResponseType } from "@/lib/types";
 import { doc, setDoc } from "firebase/firestore";
 import { uploadFileToStorage } from "./imageService";
 

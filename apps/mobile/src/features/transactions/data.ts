@@ -1,4 +1,4 @@
-import { CategoryType, ExpenseCategoriesType } from "@/types";
+import { CategoryType, ExpenseCategoriesType } from "./types";
 import * as Icons from "phosphor-react-native"; // Import all icons dynamically
 
 export const expenseCategories: ExpenseCategoriesType = {

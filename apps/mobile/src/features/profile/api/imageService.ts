@@ -1,12 +1,12 @@
-import { storage } from "@/config/firebase";
-import { ResponseType } from "@/types";
+import { storage } from "@/lib/firebase";
+import { ResponseType } from "@/lib/types";
 import { File } from "expo-file-system";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 
 export const getProfileImage=(file:any)=>{
    if(file&& typeof file=='string') return file; 
    if(file&& typeof file=='object' ) return file.uri;
-   return require('../assets/images/defaultAvatar.png');
+   return require('../../../../assets/images/defaultAvatar.png');
 }
 
 export const uploadFileToStorage=async(

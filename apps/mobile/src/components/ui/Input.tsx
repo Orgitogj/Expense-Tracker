@@ -1,8 +1,8 @@
 import { StyleSheet, TextInput, View } from 'react-native'
 import React from 'react'
-import { InputProps } from '@/types'
-import { colors, radius, spacingX } from '../constants/theme'
-import { verticalScale } from '@/utils/styling'
+import { InputProps } from './types'
+import { colors, radius, spacingX } from '@/theme'
+import { verticalScale } from '@/theme/scale'
 
 const Input = ({icon,containerStyle,inputStyle,inputRef,...rest}:InputProps) => {
   return (

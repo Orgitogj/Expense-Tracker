@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
-import { colors } from '../constants/theme';
+import { colors } from '@/theme';
 const Index = () => {
   return (
     <View style={styles.container}>

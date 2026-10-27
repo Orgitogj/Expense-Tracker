@@ -1,5 +1,5 @@
-import ScreenWrapper from '@/src/components/ScreenWrapper';
-import Typo from '@/src/components/Typo';
+import ScreenWrapper from '@/components/ui/ScreenWrapper';
+import Typo from '@/components/ui/Typo';
 
 export default function Home() {
   return (

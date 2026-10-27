@@ -1,4 +1,4 @@
-import { AuthProvider, useAuth } from "@/context/authContext";
+import { AuthProvider, useAuth } from "@/features/auth/context/authContext";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";

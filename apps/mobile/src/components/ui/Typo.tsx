@@ -1,8 +1,8 @@
 import React from 'react';
 import { Text, TextStyle } from 'react-native';
-import { TypoProps } from '@/types';
-import { colors } from '../constants/theme';
-import { verticalScale } from '@/utils/styling';
+import { TypoProps } from './types';
+import { colors } from '@/theme';
+import { verticalScale } from '@/theme/scale';
 
 const Typo = ({
   size,

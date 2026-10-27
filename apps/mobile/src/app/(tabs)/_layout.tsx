@@ -1,6 +1,6 @@
 import React from 'react'
 import { Tabs } from 'expo-router'
-import CustomTabs from '@/src/components/CustomTabs'
+import CustomTabs from '@/components/navigation/CustomTabs'
 
 const _layout = () => {
   return (

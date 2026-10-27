@@ -1,10 +1,10 @@
 import { StyleSheet, TouchableOpacity } from 'react-native'
 import React from 'react'
-import { BackButtonProps } from '@/types'
+import { BackButtonProps } from './types'
 import { useRouter } from 'expo-router'
 import { CaretLeftIcon } from 'phosphor-react-native'
-import { verticalScale } from '@/utils/styling'
-import { colors,radius} from '../constants/theme'
+import { verticalScale } from '@/theme/scale'
+import { colors,radius} from '@/theme'
 
 const BackButton = ({style,iconSize=26}:BackButtonProps) => {
     const router=useRouter();

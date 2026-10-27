@@ -1,12 +1,12 @@
-import { auth, firestore } from "@/config/firebase";
-import { requestEmailVerification } from "@/services/authService";
-import { updateUser } from "@/services/userService";
+import { auth, firestore } from "@/lib/firebase";
+import { requestEmailVerification } from "@/features/auth/api/authService";
+import { updateUser } from "@/features/profile/api/userService";
 import {
   AuthContextType,
   ProfileSaveResult,
   RegisterResult,
   UserType,
-} from "@/types";
+} from "@/features/auth/types";
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,

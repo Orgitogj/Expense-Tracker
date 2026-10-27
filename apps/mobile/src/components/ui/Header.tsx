@@ -1,7 +1,7 @@
 import { StyleSheet, View } from 'react-native'
 import React from 'react'
 import Typo from './Typo'
-import { HeaderProps } from '@/types'
+import { HeaderProps } from './types'
 
 const Header = ({title="",leftIcon,style}:HeaderProps) => {
   return (

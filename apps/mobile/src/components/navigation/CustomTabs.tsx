@@ -1,8 +1,8 @@
 import { Platform, StyleSheet, View } from 'react-native';
 import { useLinkBuilder, PlatformPressable } from 'expo-router/react-navigation';
 import { BottomTabBarProps } from 'expo-router/build/react-navigation/bottom-tabs';
-import { verticalScale } from '@/utils/styling';
-import { colors, spacingY } from '../constants/theme';
+import { verticalScale } from '@/theme/scale';
+import { colors, spacingY } from '@/theme';
 import * as Icons from 'phosphor-react-native';
 
 export default function CustomTabs({

@@ -1,8 +1,8 @@
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import React from 'react'
-import { CustomButtonProps } from '@/types'
-import { colors,radius } from '../constants/theme'
-import { verticalScale } from '@/utils/styling'
+import { CustomButtonProps } from './types'
+import { colors,radius } from '@/theme'
+import { verticalScale } from '@/theme/scale'
 import Loading from './Loading'
 
 const Button = (
