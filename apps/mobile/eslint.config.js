@@ -18,6 +18,19 @@ module.exports = defineConfig([
     rules: {
       "no-unreachable": "error",
       "react/no-unescaped-entities": "off",
+      "no-restricted-imports": [
+        "error",
+        {
+          paths: [
+            {
+              name: "react-native",
+              importNames: ["StyleSheet"],
+              message:
+                "Style with NativeWind className instead (see apps/mobile/README.md).",
+            },
+          ],
+        },
+      ],
     },
   },
 ]);

@@ -3,7 +3,7 @@ import React from "react";
 export type accountOptionType = {
   title: string;
   icon: React.ReactNode;
-  bgColor: string;
+  bgClassName: string;
   routeName?: any;
 };
 

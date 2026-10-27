@@ -1,92 +1,71 @@
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import React from 'react';
-import ScreenWrapper from '@/components/ui/ScreenWrapper';
-import Typo from '@/components/ui/Typo';
-import { colors, spacingX, spacingY } from '@/theme';
-import { verticalScale } from '@/theme/scale';
-import Button from '@/components/ui/Button';
-import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
-import { useRouter } from 'expo-router';
+import { useRouter } from "expo-router";
+import { TouchableOpacity, View } from "react-native";
+import Animated, { FadeIn, FadeInDown } from "react-native-reanimated";
+
+import Button from "@/components/ui/Button";
+import ScreenWrapper from "@/components/ui/ScreenWrapper";
+import Typo from "@/components/ui/Typo";
+
 const Welcome = () => {
-  const router=useRouter();
+  const router = useRouter();
   return (
     <ScreenWrapper>
-      <View style={styles.container}>
+      <View className="flex-1 justify-between pt-[7px]">
         <View>
-          <TouchableOpacity style={styles.loginButton} onPress={()=>router.push('/(auth)/login')}>
-            <Typo fontWeight={"500"}>Sign in</Typo>
-
+          <TouchableOpacity
+            className="mr-5 self-end"
+            onPress={() => router.push("/(auth)/login")}
+          >
+            <Typo className="font-medium">Sign in</Typo>
           </TouchableOpacity>
           <Animated.Image
-          entering={FadeIn.duration(1000)}
-          source={require('../../../../assets/images/welcome.png')}
-          style={styles.welcomeImage}
-          resizeMode="contain"/>
+            entering={FadeIn.duration(1000)}
+            source={require("../../../../assets/images/welcome.png")}
+            className="mt-[100px] h-[300px] w-full self-center"
+            resizeMode="contain"
+          />
         </View>
-        <View style={styles.footer}>
-          <Animated.View entering={FadeInDown.duration(1000).springify().damping(12)} style={{alignItems:"center"}}>
-            <Typo size={30} fontWeight={"800"}>
+        <View className="android:shadow-[0px_-10px_10px_#ffffff] ios:shadow-[0px_-10px_25px_rgba(255,255,255,0.15)] items-center gap-5 bg-neutral-900 pb-[45px] pt-[30px]">
+          <Animated.View
+            entering={FadeInDown.duration(1000).springify().damping(12)}
+            className="items-center"
+          >
+            <Typo className="text-[30px] font-extrabold">
               Always take control
             </Typo>
-            <Typo size={30} fontWeight={"800"}>
-             of your finances
-            </Typo>
+            <Typo className="text-[30px] font-extrabold">of your finances</Typo>
           </Animated.View>
-         <Animated.View entering={FadeInDown.duration(1000).delay(100).springify().damping(12)} style={{alignItems:"center",gap:2}}>
-            <Typo size={17} color={colors.textLight}>
+          <Animated.View
+            entering={FadeInDown.duration(1000)
+              .delay(100)
+              .springify()
+              .damping(12)}
+            className="items-center gap-0.5"
+          >
+            <Typo className="text-[17px] text-foreground-light">
               Financed must be arranged to set a better
             </Typo>
-            <Typo size={17} color={colors.textLight}>
+            <Typo className="text-[17px] text-foreground-light">
               lifestyle in future
             </Typo>
           </Animated.View>
-          <Animated.View entering={FadeInDown.duration(1000).delay(200).springify().damping(12)}  style={styles.buttonContainer}>
-            <Button onPress={()=>router.push('/(auth)/register')}>
-              <Typo size={22} color={colors.neutral900} fontWeight={"600"} >Get started</Typo>
+          <Animated.View
+            entering={FadeInDown.duration(1000)
+              .delay(200)
+              .springify()
+              .damping(12)}
+            className="w-full px-[25px]"
+          >
+            <Button onPress={() => router.push("/(auth)/register")}>
+              <Typo className="text-[22px] font-semibold text-neutral-900">
+                Get started
+              </Typo>
             </Button>
           </Animated.View>
         </View>
       </View>
     </ScreenWrapper>
-  )
-}
+  );
+};
 
-export default Welcome
-
-const styles = StyleSheet.create({
-
-container:{
-  flex:1,
-  justifyContent:'space-between',
-  paddingTop:spacingY._7,
-},
-welcomeImage:{
-  width:"100%",
-  height:verticalScale(300),
-  alignSelf:"center",
-  marginTop:verticalScale(100),
-},
-loginButton:{
-  alignSelf:"flex-end",
-  marginRight:spacingX._20,
-},
-footer:{
-  backgroundColor:colors.neutral900,
-  alignItems:"center",
-  paddingTop:verticalScale(30),
-  paddingBottom:verticalScale(45),
-  gap:spacingY._20,
-  shadowColor:"white",
-  shadowOffset:{width:0,height:-10},
-  elevation:10,
-  shadowRadius:25,
-  shadowOpacity:0.15,
-
-},
-buttonContainer:{
-  width:"100%",
-  paddingHorizontal:spacingX._25,
-},
-
-
-})
+export default Welcome;

@@ -1,31 +1,22 @@
-import { StyleSheet, TouchableOpacity } from 'react-native'
-import React from 'react'
-import { BackButtonProps } from './types'
-import { useRouter } from 'expo-router'
-import { CaretLeftIcon } from 'phosphor-react-native'
-import { verticalScale } from '@/theme/scale'
-import { colors,radius} from '@/theme'
+import { useRouter } from "expo-router";
+import { CaretLeftIcon } from "phosphor-react-native";
+import { TouchableOpacity } from "react-native";
 
-const BackButton = ({style,iconSize=26}:BackButtonProps) => {
-    const router=useRouter();
+import { cn } from "@/lib/cn";
+import { colors } from "@/theme";
+
+import { BackButtonProps } from "./types";
+
+const BackButton = ({ className, iconSize = 26 }: BackButtonProps) => {
+  const router = useRouter();
   return (
-    <TouchableOpacity onPress={()=>router.back()} style={[styles.button,style]}>
-      <CaretLeftIcon size={verticalScale(iconSize)}
-      color={colors.white}
-      weight="bold"
-      />
+    <TouchableOpacity
+      onPress={() => router.back()}
+      className={cn("self-start rounded-xl bg-neutral-600 p-[5px]", className)}
+    >
+      <CaretLeftIcon size={iconSize} color={colors.white} weight="bold" />
     </TouchableOpacity>
-  )
-}
+  );
+};
 
-export default BackButton
-
-const styles = StyleSheet.create({
-    button:{
-backgroundColor:colors.neutral600,
-alignSelf:'flex-start',
-borderRadius:radius._12,
-borderCurve:"continuous",
-padding:5
-    }
-})
+export default BackButton;

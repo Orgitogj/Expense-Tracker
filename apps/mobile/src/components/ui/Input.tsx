@@ -1,41 +1,33 @@
-import { StyleSheet, TextInput, View } from 'react-native'
-import React from 'react'
-import { InputProps } from './types'
-import { colors, radius, spacingX } from '@/theme'
-import { verticalScale } from '@/theme/scale'
+import { TextInput, View } from "react-native";
 
-const Input = ({icon,containerStyle,inputStyle,inputRef,...rest}:InputProps) => {
+import { cn } from "@/lib/cn";
+import { colors } from "@/theme";
+
+import { InputProps } from "./types";
+
+const Input = ({
+  icon,
+  containerClassName,
+  className,
+  inputRef,
+  ...rest
+}: InputProps) => {
   return (
-    <View style={[styles.container,containerStyle&&containerStyle]}>
-        {icon && icon}
-      <TextInput style={[styles.input,inputStyle]}
-      placeholderTextColor={colors.neutral400}
-      ref={inputRef && inputRef}
-      {...rest}
+    <View
+      className={cn(
+        "h-[64px] flex-row items-center justify-center gap-2.5 rounded-[17px] border border-neutral-300 px-[15px]",
+        containerClassName,
+      )}
+    >
+      {icon && icon}
+      <TextInput
+        className={cn("flex-1 text-[14px] text-white", className)}
+        placeholderTextColor={colors.neutral400}
+        ref={inputRef}
+        {...rest}
       />
     </View>
-  )
-}
+  );
+};
 
-export default Input
-
-const styles = StyleSheet.create({
-    container:{
-        flexDirection:"row",
-        height:verticalScale(64),
-        alignItems:"center",
-        justifyContent:"center",
-        borderWidth:1,
-        borderColor:colors.neutral300,
-        borderRadius:radius._17,
-        borderCurve:"continuous",
-        paddingHorizontal:spacingX._15,
-        gap:spacingX._10
-    },
-    input:{
-        flex:1,
-        color:colors.white,
-        fontSize:verticalScale(14),
-
-    }
-})
+export default Input;

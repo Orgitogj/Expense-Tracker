@@ -1,9 +1,12 @@
-import { Platform, StyleSheet, View } from 'react-native';
-import { useLinkBuilder, PlatformPressable } from 'expo-router/react-navigation';
-import { BottomTabBarProps } from 'expo-router/build/react-navigation/bottom-tabs';
-import { verticalScale } from '@/theme/scale';
-import { colors, spacingY } from '@/theme';
-import * as Icons from 'phosphor-react-native';
+import { BottomTabBarProps } from "expo-router/build/react-navigation/bottom-tabs";
+import {
+  PlatformPressable,
+  useLinkBuilder,
+} from "expo-router/react-navigation";
+import * as Icons from "phosphor-react-native";
+import { View } from "react-native";
+
+import { colors } from "@/theme";
 
 export default function CustomTabs({
   state,
@@ -15,46 +18,46 @@ export default function CustomTabs({
   const tabBarIcons: Record<string, (isFocused: boolean) => React.ReactNode> = {
     index: (isFocused) => (
       <Icons.HouseIcon
-        size={verticalScale(25)}
-        weight={isFocused ? 'fill' : 'regular'}
+        size={25}
+        weight={isFocused ? "fill" : "regular"}
         color={isFocused ? colors.primary : colors.neutral400}
       />
     ),
 
     statistics: (isFocused) => (
       <Icons.ChartBarIcon
-        size={verticalScale(25)}
-        weight={isFocused ? 'fill' : 'regular'}
+        size={25}
+        weight={isFocused ? "fill" : "regular"}
         color={isFocused ? colors.primary : colors.neutral400}
       />
     ),
 
     wallet: (isFocused) => (
-    <Icons.WalletIcon
-        size={verticalScale(25)}
-        weight={isFocused ? 'fill' : 'regular'}
+      <Icons.WalletIcon
+        size={25}
+        weight={isFocused ? "fill" : "regular"}
         color={isFocused ? colors.primary : colors.neutral400}
-    />
+      />
     ),
 
     profile: (isFocused) => (
       <Icons.UserIcon
-        size={verticalScale(25)}
-        weight={isFocused ? 'fill' : 'regular'}
+        size={25}
+        weight={isFocused ? "fill" : "regular"}
         color={isFocused ? colors.primary : colors.neutral400}
       />
     ),
   };
 
   return (
-    <View style={styles.tabbar}>
+    <View className="ios:h-[73px] h-[55px] w-full flex-row items-center justify-center border-t border-neutral-700 bg-neutral-800">
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
         const isFocused = state.index === index;
 
         const onPress = () => {
           const event = navigation.emit({
-            type: 'tabPress',
+            type: "tabPress",
             target: route.key,
             canPreventDefault: true,
           });
@@ -66,7 +69,7 @@ export default function CustomTabs({
 
         const onLongPress = () => {
           navigation.emit({
-            type: 'tabLongPress',
+            type: "tabLongPress",
             target: route.key,
           });
         };
@@ -82,46 +85,12 @@ export default function CustomTabs({
             testID={options.tabBarButtonTestID}
             onPress={onPress}
             onLongPress={onLongPress}
-            style={styles.tabButton}
+            className="ios:mb-2.5 mb-[5px] flex-1 items-center justify-center gap-[3px]"
           >
             {icon}
-
           </PlatformPressable>
         );
       })}
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  tabbar: {
-    flexDirection: 'row',
-    width: '100%',
-    height:
-      Platform.OS === 'ios'
-        ? verticalScale(73)
-        : verticalScale(55),
-    backgroundColor: colors.neutral800,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderTopColor: colors.neutral700,
-    borderTopWidth: 1,
-  },
-
-  tabButton: {
-    marginBottom:
-      Platform.OS === 'ios'
-        ? spacingY._10
-        : spacingY._5,
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 3,
-  },
-
-  label: {
-    fontSize: 12,
-    fontWeight: '500',
-  },
-});
-

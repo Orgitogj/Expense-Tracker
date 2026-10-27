@@ -3,29 +3,19 @@ import {
   TextInput,
   TextInputProps,
   TextProps,
-  TextStyle,
   TouchableOpacityProps,
-  ViewStyle,
 } from "react-native";
 
 export type ScreenWrapperProps = {
-  style?: ViewStyle;
+  className?: string;
   children: React.ReactNode;
 };
 export type ModalWrapperProps = {
-  style?: ViewStyle;
+  className?: string;
   children: React.ReactNode;
-  bg?: string;
 };
 
-export type TypoProps = {
-  size?: number;
-  color?: string;
-  fontWeight?: TextStyle["fontWeight"];
-  children: any | null;
-  style?: TextStyle;
-  textProps?: TextProps;
-};
+export type TypoProps = TextProps;
 
 export type IconComponent = React.ComponentType<{
   height?: number;
@@ -45,27 +35,25 @@ export type IconProps = {
 
 export type HeaderProps = {
   title?: string;
-  style?: ViewStyle;
+  className?: string;
   leftIcon?: ReactNode;
   rightIcon?: ReactNode;
 };
 
 export type BackButtonProps = {
-  style?: ViewStyle;
+  className?: string;
   iconSize?: number;
 };
 
 export interface InputProps extends TextInputProps {
   icon?: React.ReactNode;
-  containerStyle?: ViewStyle;
-  inputStyle?: TextStyle;
+  containerClassName?: string;
   inputRef?: React.RefObject<TextInput>;
   //   label?: string;
   //   error?: string;
 }
 
 export interface CustomButtonProps extends TouchableOpacityProps {
-  style?: ViewStyle;
   onPress?: () => void;
   loading?: boolean;
   children: React.ReactNode;
@@ -75,7 +63,7 @@ export type ImageUploadProps = {
   file?: any;
   onSelect: (file: any) => void;
   onClear: () => void;
-  containerStyle?: ViewStyle;
-  imageStyle?: ViewStyle;
+  containerClassName?: string;
+  imageClassName?: string;
   placeholder?: string;
 };

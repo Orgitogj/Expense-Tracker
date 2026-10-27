@@ -7,5 +7,6 @@ const config = getDefaultConfig(__dirname);
 module.exports = withNativeWind(config, {
   input: path.join(__dirname, "global.css"),
   configPath: path.join(__dirname, "tailwind.config.js"),
+  inlineRem: 16,
   disableTypeScriptGeneration: true,
 });

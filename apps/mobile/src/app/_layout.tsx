@@ -1,4 +1,5 @@
 import "../../global.css";
+import "@/lib/nativewind";
 
 import { AuthProvider, useAuth } from "@/features/auth/context/authContext";
 import { Stack } from "expo-router";

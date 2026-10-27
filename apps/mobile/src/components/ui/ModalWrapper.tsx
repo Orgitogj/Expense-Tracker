@@ -1,27 +1,20 @@
-import { Platform, StyleSheet, View } from 'react-native'
-import React from 'react'
-import { ModalWrapperProps } from './types'
-import { colors, spacingY } from '@/theme'
+import { View } from "react-native";
 
-const isIos=Platform.OS==='ios';
-const ModalWrapper = ({
-    style,
-    children,
-    bg=colors.neutral800
-}:ModalWrapperProps) => {
+import { cn } from "@/lib/cn";
+
+import { ModalWrapperProps } from "./types";
+
+const ModalWrapper = ({ className, children }: ModalWrapperProps) => {
   return (
-    <View style={[styles.container,{backgroundColor:bg},style && style]}>
+    <View
+      className={cn(
+        "ios:pb-[20px] flex-1 bg-neutral-800 pb-[10px] pt-[15px]",
+        className,
+      )}
+    >
       {children}
     </View>
-  )
-}
+  );
+};
 
-export default ModalWrapper
-
-const styles = StyleSheet.create({
-    container:{
-            flex:1,
-            paddingTop:isIos? spacingY._15 :spacingY._15,
-            paddingBottom:isIos? spacingY._20 :spacingY._10,
-    }
-})
+export default ModalWrapper;

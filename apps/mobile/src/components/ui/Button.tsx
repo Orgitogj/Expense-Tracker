@@ -1,41 +1,33 @@
-import { StyleSheet, TouchableOpacity, View } from 'react-native'
-import React from 'react'
-import { CustomButtonProps } from './types'
-import { colors,radius } from '@/theme'
-import { verticalScale } from '@/theme/scale'
-import Loading from './Loading'
+import { TouchableOpacity, View } from "react-native";
 
-const Button = (
-    {
-        style,
-        onPress,
-        loading=false,
-        children
-    }:CustomButtonProps
-) => {
-    if (loading){
-        return (
-            <View style={[styles.button,style,{backgroundColor:"transparent"}]}>
-                <Loading/>
-            </View>
-        )
-    }
+import { cn } from "@/lib/cn";
+
+import Loading from "./Loading";
+import { CustomButtonProps } from "./types";
+
+const baseClassName = "h-[52px] items-center justify-center rounded-[17px]";
+
+const Button = ({
+  className,
+  onPress,
+  loading = false,
+  children,
+}: CustomButtonProps) => {
+  if (loading) {
+    return (
+      <View className={cn(baseClassName, className, "bg-transparent")}>
+        <Loading />
+      </View>
+    );
+  }
   return (
-    <TouchableOpacity onPress={onPress} style={[styles.button,style]}>
+    <TouchableOpacity
+      onPress={onPress}
+      className={cn(baseClassName, "bg-primary", className)}
+    >
       {children}
     </TouchableOpacity>
-  )
-}
+  );
+};
 
-export default Button
-
-const styles = StyleSheet.create({
-    button:{
-        backgroundColor:colors.primary,
-        borderRadius:radius._17,
-        borderCurve:"continuous",
-        height:verticalScale(52),
-        justifyContent:"center",
-        alignItems:"center"
-    }
-})
+export default Button;
