@@ -178,28 +178,30 @@ Development data lives in the Docker volume `expense-tracker_postgres_data`. **R
 
 Run these from the repository root. They delegate to the workspaces.
 
-| Command                             | What it does                                                 |
-| ----------------------------------- | ------------------------------------------------------------ |
-| `npm run mobile:start`              | Starts the Expo dev server (Metro) for the mobile app        |
-| `npm run mobile:android`            | Builds and installs the Android debug app, then starts Metro |
-| `npm run mobile:ios`                | Same for iOS (macOS only)                                    |
-| `npm run mobile:web`                | Starts the web version                                       |
-| `npm run api:dev`                   | Starts the API with automatic restart                        |
-| `npm run api:build`                 | Generates the Prisma Client and compiles the API to `dist/`  |
-| `npm run api:start`                 | Runs the compiled API                                        |
-| `npm run api:test`                  | API unit and HTTP tests (no database needed)                 |
-| `npm run api:test:integration`      | API tests against the test database (`db:test:up` first)     |
-| `npm run api:prisma:validate`       | Validates the Prisma schema                                  |
-| `npm run api:prisma:generate`       | Generates the Prisma Client                                  |
-| `npm run api:prisma:migrate:dev`    | Creates and applies a migration in development               |
-| `npm run api:prisma:migrate:deploy` | Applies pending migrations without resetting data            |
-| `npm run api:prisma:migrate:status` | Shows the migration status                                   |
-| `npm run typecheck`                 | TypeScript (strict) in every workspace                       |
-| `npm run lint`                      | ESLint in every workspace                                    |
-| `npm run test`                      | Unit tests in every workspace                                |
-| `npm run format`                    | Formats files with Prettier in every workspace               |
-| `npm run format:check`              | Checks formatting without writing                            |
-| `npm run check`                     | `typecheck`, `lint`, `test`, then `format:check`             |
+| Command                             | What it does                                                          |
+| ----------------------------------- | --------------------------------------------------------------------- |
+| `npm run mobile:start`              | Starts the Expo dev server (Metro) for the mobile app                 |
+| `npm run mobile:android`            | Builds and installs the Android debug app, then starts Metro          |
+| `npm run mobile:ios`                | Same for iOS (macOS only)                                             |
+| `npm run mobile:web`                | Starts the web version                                                |
+| `npm run mobile:test`               | Mobile component tests (Jest + React Native Testing Library)          |
+| `npm run mobile:bundle`             | Builds the Android and iOS JavaScript bundles into `apps/mobile/dist` |
+| `npm run api:dev`                   | Starts the API with automatic restart                                 |
+| `npm run api:build`                 | Generates the Prisma Client and compiles the API to `dist/`           |
+| `npm run api:start`                 | Runs the compiled API                                                 |
+| `npm run api:test`                  | API unit and HTTP tests (no database needed)                          |
+| `npm run api:test:integration`      | API tests against the test database (`db:test:up` first)              |
+| `npm run api:prisma:validate`       | Validates the Prisma schema                                           |
+| `npm run api:prisma:generate`       | Generates the Prisma Client                                           |
+| `npm run api:prisma:migrate:dev`    | Creates and applies a migration in development                        |
+| `npm run api:prisma:migrate:deploy` | Applies pending migrations without resetting data                     |
+| `npm run api:prisma:migrate:status` | Shows the migration status                                            |
+| `npm run typecheck`                 | TypeScript (strict) in every workspace                                |
+| `npm run lint`                      | ESLint in every workspace                                             |
+| `npm run test`                      | Mobile tests and API unit tests                                       |
+| `npm run format`                    | Formats files with Prettier in every workspace                        |
+| `npm run format:check`              | Checks formatting without writing                                     |
+| `npm run check`                     | `typecheck`, `lint`, `test`, then `format:check`                      |
 
 Expo-specific checks are run from `apps/mobile`:
 
@@ -209,6 +211,45 @@ npx expo install --check
 npx expo-doctor
 npx expo config --type public
 ```
+
+## Continuous integration
+
+[`.github/workflows/ci.yml`](.github/workflows/ci.yml) runs on every pull request to `main`, every push to `main`, and manually from **Actions → CI → Run workflow**. It has read-only repository permissions, uses no secrets, and cancels an older run when a newer commit arrives for the same pull request or branch. Each job checks out the code, installs the Node.js version from [`.nvmrc`](.nvmrc) and runs `npm ci` from the root lockfile (npm downloads are cached by the lockfile hash). Nothing is deployed, published, uploaded or released.
+
+| Check (job name)                  | What it verifies                                                                                                     | Run it locally                                            |
+| --------------------------------- | -------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| `Format`                          | Prettier formatting in every workspace                                                                               | `npm run format:check`                                    |
+| `Lint`                            | ESLint for mobile (`expo lint`) and API                                                                              | `npm run lint`                                            |
+| `Typecheck`                       | TypeScript strict for mobile and API (generates the Prisma Client first)                                             | `npm run typecheck`                                       |
+| `Mobile tests`                    | Jest + React Native Testing Library component tests                                                                  | `npm run mobile:test`                                     |
+| `API tests`                       | Vitest unit and HTTP tests without a database                                                                        | `npm run api:test`                                        |
+| `API integration (PostgreSQL)`    | Readiness and query timeouts against a disposable PostgreSQL 18 service container                                    | `npm run db:test:up`, then `npm run api:test:integration` |
+| `API build`                       | Prisma schema validation, Prisma Client generation and the production TypeScript build                               | `npm run api:prisma:validate`, then `npm run api:build`   |
+| `Mobile JS bundle (Android, iOS)` | Metro + Hermes JavaScript bundles for Android and iOS (`expo export`), written to the git-ignored `apps/mobile/dist` | `npm run mobile:bundle`                                   |
+
+`npm run check` runs `Format`, `Lint`, `Typecheck`, `Mobile tests` and `API tests` locally in one command.
+
+- **The JS bundle check is not a native build.** It proves that Metro can resolve, transform and bundle all JavaScript for both platforms. It does not compile the Android or iOS projects, link native modules, sign anything or produce an installable app.
+- **Database in CI.** The integration job starts `postgres:18-alpine` (the same major as development) as a service container with throwaway credentials (`ci` / `ci`, database `expense_tracker_test`) and a `pg_isready` healthcheck. Checked-in migrations are applied with `prisma migrate deploy` only when `apps/api/prisma/migrations` contains `migration.sql` files. Until the first model exists, the tests verify connectivity and timeouts without creating any tables. CI never connects to a deployed database.
+- **No Firebase in CI.** Mobile tests run with `jest.setup.js`, which replaces `@/lib/firebase` with inert objects, so tests cannot reach Firebase. The bundle job needs no Firebase values because bundling does not execute app code.
+- **Pinned actions.** Actions are pinned to commit SHAs: `actions/checkout` v7.0.1 = `3d3c42e5aac5ba805825da76410c181273ba90b1`, `actions/setup-node` v7.1.0 = `949feb2413d6458794dcd2491c4babbbce0c15c1` (used in `.github/actions/setup/action.yml`). To update one, look up the new release's commit SHA on GitHub and replace it everywhere it appears.
+- **Mobile tests** live in `__tests__` folders next to the code they test (never inside `src/app`, because Expo Router treats every file there as a route) and import `describe`, `it`, `expect` and `jest` from `@jest/globals`.
+
+### What still needs a manual device test
+
+CI cannot run the app. Test these on an emulator or phone before merging changes that affect them: the native Android build (`npm run mobile:android`), sign-in, registration, email verification and profile editing against Firebase, image picking and permissions, navigation and layout on real screen sizes, and reaching the API from a device.
+
+### Making the checks required on `main`
+
+GitHub only offers a check as "required" after it has run at least once, so do this after the first pull request with this workflow has finished its CI run:
+
+1. Open the repository on GitHub → **Settings → Rules → Rulesets → New ruleset → New branch ruleset**.
+2. Name it `Protect main`, set **Enforcement status** to **Active**, and under **Target branches** choose **Add target → Include default branch**.
+3. Enable **Require a pull request before merging**.
+4. Enable **Require status checks to pass**, click **Add checks**, and add each job name from the table above: `Format`, `Lint`, `Typecheck`, `Mobile tests`, `API tests`, `API integration (PostgreSQL)`, `API build`, `Mobile JS bundle (Android, iOS)`. Optionally enable **Require branches to be up to date before merging**.
+5. Enable **Block force pushes**, then **Create**.
+
+Required checks are matched by job name, so if a job's `name:` changes in `ci.yml`, update the ruleset as well.
 
 ## Environment variables and secrets
 

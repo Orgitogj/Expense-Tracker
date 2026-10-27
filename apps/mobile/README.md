@@ -139,6 +139,17 @@ Keep feature-specific one-off values inside the feature. Only values shared acro
 npm run typecheck
 npm run lint
 npm run format:check
+npm run test
+npm run bundle:native
 ```
 
-These scripts can be run from `apps/mobile` or, for all workspaces, from the repository root.
+These scripts can be run from `apps/mobile`. From the repository root, use `npm run mobile:test` and `npm run mobile:bundle`, or the workspace-wide `npm run typecheck`, `npm run lint` and `npm run format:check`.
+
+## Tests
+
+- Jest with the `jest-expo` preset (SDK 57, Jest 29) and React Native Testing Library 14. `test-renderer` stays on 1.2.x because 1.3+ requires React 19.3, while this app uses React 19.2.3.
+- Put tests in a `__tests__` folder next to the code they test, for example `src/components/ui/__tests__/Button.test.tsx`. Never put tests in `src/app`: Expo Router would treat them as routes.
+- Import `describe`, `it`, `expect` and `jest` from `@jest/globals`; Jest globals are not part of the app's TypeScript types.
+- Test what the user sees and does (text, presses, state changes) through React Native Testing Library queries, not component internals or snapshots.
+- `jest.setup.js` replaces `@/lib/firebase` with inert objects, so no test can reach Firebase. Mock other native or network boundaries in the test that needs them.
+- `npm run bundle:native` always clears the Metro cache. Metro caches transformed files with `EXPO_PUBLIC_*` values already inlined, so a bundle built from a warm cache could contain stale values.
