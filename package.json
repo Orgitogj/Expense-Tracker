@@ -13,6 +13,13 @@
     "mobile:android": "npm run android --workspace @expense-tracker/mobile",
     "mobile:ios": "npm run ios --workspace @expense-tracker/mobile",
     "mobile:web": "npm run web --workspace @expense-tracker/mobile",
-    "lint": "npm run lint --workspaces --if-present"
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "format": "npm run format --workspaces --if-present",
+    "format:check": "npm run format:check --workspaces --if-present",
+    "check": "npm run typecheck && npm run lint && npm run format:check"
+  },
+  "devDependencies": {
+    "prettier": "^3.9.10"
   }
 }
