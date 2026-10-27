@@ -8,6 +8,7 @@ module.exports = defineConfig([
     'ios/*',
     '.expo/*',
     'expo-env.d.ts',
+    'nativewind-env.d.ts',
     'scripts/*',
   ]),
   expoConfig,

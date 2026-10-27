@@ -21,6 +21,7 @@
       "package": "com.orgito.expensetracker"
     },
     "web": {
+      "bundler": "metro",
       "output": "static",
       "favicon": "./assets/images/favicon.png"
     },
