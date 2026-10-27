@@ -6,13 +6,10 @@ import {
   sendPasswordResetEmail,
 } from "firebase/auth";
 
-type AuthActionResult =
-  | { success: true }
-  | { success: false; msg: string };
+type AuthActionResult = { success: true } | { success: false; msg: string };
 
 type EmailVerificationResult =
-  | { success: true; verified: boolean }
-  | { success: false; msg: string };
+  { success: true; verified: boolean } | { success: false; msg: string };
 
 function getAuthErrorMessage(error: unknown): string {
   if (error instanceof FirebaseError) {
@@ -34,7 +31,7 @@ function getAuthErrorMessage(error: unknown): string {
 }
 
 export async function requestPasswordReset(
-  email: string
+  email: string,
 ): Promise<AuthActionResult> {
   const normalizedEmail = email.trim();
 
@@ -71,7 +68,7 @@ export async function requestPasswordReset(
 }
 
 export async function requestEmailVerification(
-  expectedUid?: string
+  expectedUid?: string,
 ): Promise<AuthActionResult> {
   const user = auth.currentUser;
 

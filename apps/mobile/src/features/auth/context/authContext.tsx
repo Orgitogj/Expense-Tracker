@@ -23,7 +23,7 @@ const PROFILE_SAVE_FAILED_MSG =
 const VERIFICATION_EMAIL_FAILED_MSG =
   "We couldn't send the verification email. You can request it again from Profile.";
 
-const getErrorCode =(error: unknown): string | null => {
+const getErrorCode = (error: unknown): string | null => {
   if (typeof error === "object" && error !== null && "code" in error) {
     return typeof error.code === "string" ? error.code : null;
   }
@@ -75,7 +75,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
                   email: firebaseUser.email,
                   name: firebaseUser.displayName,
                   image: null,
-                }
+                },
           );
           setIsSignedIn(true);
           await registrationRef.current;
@@ -137,7 +137,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const saveProfile = async (
     uid: string,
-    name: string
+    name: string,
   ): Promise<ProfileSaveResult> => {
     const res = await updateUser(uid, { name });
 
@@ -157,7 +157,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const runRegistration = async (
     email: string,
     password: string,
-    name: string
+    name: string,
   ): Promise<RegisterResult> => {
     let uid: string;
 
@@ -165,7 +165,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       const response = await createUserWithEmailAndPassword(
         auth,
         email,
-        password
+        password,
       );
       uid = response.user.uid;
     } catch (error: unknown) {
@@ -195,7 +195,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const register = async (
     email: string,
     password: string,
-    name: string
+    name: string,
   ): Promise<RegisterResult> => {
     if (registrationRef.current) {
       return {
@@ -207,7 +207,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     const registration = runRegistration(email.trim(), password, name.trim());
     registrationRef.current = registration.then(
       () => undefined,
-      () => undefined
+      () => undefined,
     );
 
     try {
@@ -269,9 +269,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   return (
-    <AuthContext.Provider value={contextValue}>
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
   );
 };
 
