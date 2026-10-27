@@ -6,18 +6,28 @@
     "apps/*"
   ],
   "engines": {
-    "node": "^20.19.4 || ^22.13.0 || >=24.3.0"
+    "node": "^22.13.0 || >=24.3.0"
   },
   "scripts": {
     "mobile:start": "npm run start --workspace @expense-tracker/mobile",
     "mobile:android": "npm run android --workspace @expense-tracker/mobile",
     "mobile:ios": "npm run ios --workspace @expense-tracker/mobile",
     "mobile:web": "npm run web --workspace @expense-tracker/mobile",
+    "api:dev": "npm run dev --workspace @expense-tracker/api",
+    "api:build": "npm run build --workspace @expense-tracker/api",
+    "api:start": "npm run start --workspace @expense-tracker/api",
+    "api:test": "npm run test --workspace @expense-tracker/api",
+    "api:prisma:validate": "npm run prisma:validate --workspace @expense-tracker/api",
+    "api:prisma:generate": "npm run prisma:generate --workspace @expense-tracker/api",
+    "api:prisma:migrate:dev": "npm run prisma:migrate:dev --workspace @expense-tracker/api",
+    "api:prisma:migrate:deploy": "npm run prisma:migrate:deploy --workspace @expense-tracker/api",
+    "api:prisma:migrate:status": "npm run prisma:migrate:status --workspace @expense-tracker/api",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
     "format": "npm run format --workspaces --if-present",
     "format:check": "npm run format:check --workspaces --if-present",
-    "check": "npm run typecheck && npm run lint && npm run format:check"
+    "check": "npm run typecheck && npm run lint && npm run test && npm run format:check"
   },
   "devDependencies": {
     "prettier": "^3.9.10"
