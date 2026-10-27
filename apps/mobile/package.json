@@ -58,6 +58,7 @@
     "web": "expo start --web",
     "typecheck": "tsc --noEmit",
     "test": "jest",
+    "bundle:native": "expo export --platform android --platform ios --output-dir dist --clear",
     "lint": "expo lint",
     "lint:fix": "expo lint -- --fix",
     "format": "prettier --write .",
