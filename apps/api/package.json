@@ -13,6 +13,7 @@
     "typecheck": "npm run prisma:generate && tsc --noEmit",
     "lint": "eslint .",
     "test": "npm run prisma:generate && vitest run --project unit",
+    "test:integration": "npm run prisma:generate && vitest run --project integration",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "prisma:validate": "prisma validate",
